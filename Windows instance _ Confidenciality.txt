@@ -1,0 +1,83 @@
+23-24/11/22
+~~~~~~~~~
+
+Q1:Create a VPC 192.168.0.0/16 and using this VPC create subnet 192.168.0.0./16 and attach 
+to EC2 instace.Start the EC2 instance and install tomcat inside it. create your own webpage
+(Message:name and pnr) and host it with the help of tomcat server using default port 8080?
+
+Ans: create vpc then create one subnet one gatway then this vpc create ec2 instance and
+	launch tomcat server.
+
+Q2:create policy for security department ,create policy for ec2 instance exept delete.attach this policy
+to one IAM user(RAJ) then login as a RAj then create ec2 instance,install tomcat server and host webside.
+create policy with read for ec2 instance and attach this policy to second iam user (rahul) and try 
+to delete instance.
+
+Q3:create publically hosted webside on s3 bucket(RAJ) can also have read/write and execute. then rahul try 
+to delete it. 
+
+Q4:Create EC2 instance of windows server access windows machine using rdp inside that machine install
+tomcat server, A:Deploy war file in tomcat server.
+	        B:Create your own server with name and prn.
+
+Q5:heroku cloud(paas)Search 
+
+
+Install Windows Instance:
+~~~~~~~~~~~~~~~~~~~~~~~~
+*launch instance of windows machine.
+*Go to the RDP client.
+*Download remote desktop file.
+*Generate password.(upload key pair then dicrypt)
+*open remote desktop file and connect.
+*Use google.com to install--> java X64 installer.
+*Download tomcat software.
+*Now, Host tomcat server-->http://localhost:8080
+*Next--> A:upload war file in upload war file to deploy, and host-->http://localhost:8080/war_file_name.war
+*Next-->B:C:\Program Files\Apache Software Foundation\Tomcat 9.0\webapps\create a directory
+		*inside this directory-->make html file (.html)
+		*To host-->http://localhost:8080/directory_name/file_name.html
+
+
+
+
+Confidenciality:
+~~~~~~~~~~~~~~~
+
+*First create a public-private key pair in the EC2 instance:
+(keytool -genkey -alias tomcat -keyalg RSA)
+
+where keytool cmd is a java base cmd which user for allow public key and private key.
+
+[In my case -->Enter keystore password is : z00heyz00 ]
+[Enter key password for <tomcat> is : changeit]
+
+*Digital certificate: That contait a name of the owner and the owners public key.
+[The purpose of the digital certificate is to prove that the the public key belongs to the owner and no one else]
+
+*WE export our public key and other information in a file .we will
+then import this file into our web browsers certificate store
+(keytool -exportcert -file couldcert.p12 -alias tomcat)
+
+*We need to attach the certificate in our base machine(for browser),because this certificate is our generated not certified by
+any organization.
+ 
+*Copy file ec2 instance to base machine...
+	--> protocal -- SCP
+	-->install a tool WinSCP- allow us to download/upload files between local machine and EC2 instance.
+	-->We need to provide EC2 instance Public ipv4 DNS(e.g.-->ec2-65-0-135-236.ap-south-1.compute.amazonaws.com)
+	   for our EC2 instance in this tool
+	-->User id:ec2-user ,No password
+	-->Advanced--provide the private key of the file for authentification and connect.
+	-->Then it shows our decktop and EC2 instance file side-by-side.
+	-->simply, Drag and Drop files.
+
+	For non-windows user: (scp command)
+	-->https://linuxhint.com/transfer-files-ec2-instance/
+	For timeout try this:
+	-->https://superuser.com/questions/577911/scp-lost-connection-but-ssh-works-fine/
+
+file(cert)is successfully copy in our base machine.
+
+*Then, Go to the browser then security --manage device certificate--trusted root authorities-inport security file.
+
